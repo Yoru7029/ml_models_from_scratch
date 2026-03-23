@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def lin_reg_compute_gradient(coef, intercept, X, y):
+def compute_gradient(coef, intercept, X, y):
     """
     Compute the gradient of the coefficient and inteceptias term for the least square regression.
 
@@ -23,6 +23,7 @@ def lin_reg_compute_gradient(coef, intercept, X, y):
         dj_dw[i] = 1/m * np.dot(errors, X[:, i])
 
     return dj_db, dj_dw
+
 
 def stochastic_GD(X, y, init_coef, init_intercept, max_iter, eta, tol, n_iter_no_change):
     """
@@ -52,7 +53,7 @@ def stochastic_GD(X, y, init_coef, init_intercept, max_iter, eta, tol, n_iter_no
         # Shuffling the data during each epoch gives the unbiased esimate of the true gradient
         indices = rng.permutation(m)
         for i in indices:
-            dj_db, dj_dw = lin_reg_compute_gradient(coef, intercept, X[i, :].reshape(-1, n), y[i])
+            dj_db, dj_dw = compute_gradient(coef, intercept, X[i, :].reshape(-1, n), y[i])
             # Update parameters
             intercept = intercept - eta * dj_db
             coef = coef - eta * dj_dw
@@ -79,6 +80,7 @@ def stochastic_GD(X, y, init_coef, init_intercept, max_iter, eta, tol, n_iter_no
     # Return the intercept and coefficients
     print("Iteration done:", epoch)
     return intercept, coef
+
 
 def compute_cost(X, y, intercept, coef):
     """
